@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.job4j.url.shortcut.model.Url;
 import ru.job4j.url.shortcut.model.UrlDto;
 import ru.job4j.url.shortcut.model.UrlResultDto;
 import ru.job4j.url.shortcut.service.SiteService;
@@ -17,7 +16,6 @@ import ru.job4j.url.shortcut.service.UrlService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController

@@ -3,6 +3,9 @@ package ru.job4j.url.shortcut.util;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * Класс для создания пароля.
+ */
 public class RandomGenerator {
 
     private static final int LENGTH = 10;
