@@ -23,7 +23,6 @@ import static ru.job4j.url.shortcut.filter.JWTAuthenticationFilter.*;
  *
  * @author Buslaev
  */
-
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {

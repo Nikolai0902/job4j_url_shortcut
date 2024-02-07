@@ -20,7 +20,6 @@ public class RandomGenerator {
         final char[] symbols = "^$?!@%&".toCharArray();
         final char[] allAllowed = "abcdefghijklmnopqrstuvwxyzABCDEFGJKLMNPRSTUVWXYZ0123456789^$?!@%&".toCharArray();
 
-        //Use cryptographically secure random number generator
         Random random = new SecureRandom();
 
         StringBuilder password = new StringBuilder();
@@ -29,7 +28,6 @@ public class RandomGenerator {
             password.append(allAllowed[random.nextInt(allAllowed.length)]);
         }
 
-        //Ensure password policy is met by inserting required random chars in random positions
         password.insert(random.nextInt(password.length()), lowercase[random.nextInt(lowercase.length)]);
         password.insert(random.nextInt(password.length()), uppercase[random.nextInt(uppercase.length)]);
         password.insert(random.nextInt(password.length()), numbers[random.nextInt(numbers.length)]);
