@@ -13,7 +13,7 @@ public class RandomGenerator {
     public RandomGenerator() {
     }
 
-    public static String generate() {
+    public String generate() {
         final char[] lowercase = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         final char[] uppercase = "ABCDEFGJKLMNPRSTUVWXYZ".toCharArray();
         final char[] numbers = "0123456789".toCharArray();

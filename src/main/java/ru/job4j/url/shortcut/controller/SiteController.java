@@ -21,7 +21,7 @@ public class SiteController {
     @PostMapping("/registration")
     public ResponseEntity<SiteResultDTO> registration(@Valid @RequestBody SiteDTO siteDTO) {
         var result = this.siteService.save(siteDTO);
-        if (!result.get().getRegistration()) {
+        if (result.isEmpty()) {
             return new ResponseEntity<>(
                     new SiteResultDTO(false, null, null),
                     HttpStatus.CONFLICT);

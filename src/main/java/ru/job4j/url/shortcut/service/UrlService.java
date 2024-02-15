@@ -23,7 +23,7 @@ public class UrlService {
         try {
             Url url = new Url();
             url.setUrl(address.getAddress());
-            url.setKey(RandomGenerator.generate());
+            url.setKey(new RandomGenerator().generate());
             urlOptional = Optional.of(urlRepository.save(url));
         } catch (DataIntegrityViolationException e) {
             log.error("Url уже существует", e);

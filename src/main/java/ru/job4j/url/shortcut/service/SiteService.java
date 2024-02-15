@@ -31,8 +31,8 @@ public class SiteService implements UserDetailsService {
         try {
             dtoOptional = Optional.of(
                     new SiteResultDTO(false,
-                            RandomGenerator.generate(),
-                            RandomGenerator.generate()
+                            new RandomGenerator().generate(),
+                            new RandomGenerator().generate()
                     ));
             Site newSite = new Site();
             newSite.setSite(site.getSite());
