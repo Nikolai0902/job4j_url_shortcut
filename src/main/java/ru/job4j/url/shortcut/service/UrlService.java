@@ -2,7 +2,7 @@ package ru.job4j.url.shortcut.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
+import ru.job4j.url.shortcut.exception.ServiceException;
 import org.springframework.stereotype.Service;
 import ru.job4j.url.shortcut.model.*;
 import ru.job4j.url.shortcut.repository.UrlRepository;
@@ -18,17 +18,17 @@ public class UrlService {
 
     private UrlRepository urlRepository;
 
-    public Optional<Url> save(UrlDto address) {
-        Optional<Url> urlOptional = Optional.empty();
+    public UrlResultDto save(UrlDto address) throws ServiceException {
+        Url url = new Url();
+        url.setUrl(address.getAddress());
+        url.setKey(new RandomGenerator().generate());
         try {
-            Url url = new Url();
-            url.setUrl(address.getAddress());
-            url.setKey(new RandomGenerator().generate());
-            urlOptional = Optional.of(urlRepository.save(url));
-        } catch (DataIntegrityViolationException e) {
+            var result = urlRepository.save(url);
+            return new UrlResultDto(result.getKey());
+        } catch (Exception e) {
             log.error("Url уже существует", e);
+            throw new ServiceException("Url уже существует", e);
         }
-        return urlOptional;
     }
 
     public Optional<Url> findByKey(String key) {

@@ -2,13 +2,13 @@ package ru.job4j.url.shortcut.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.job4j.url.shortcut.exception.ServiceException;
 import ru.job4j.url.shortcut.model.Site;
 import ru.job4j.url.shortcut.model.SiteDTO;
 import ru.job4j.url.shortcut.model.SiteResultDTO;
@@ -26,24 +26,23 @@ public class SiteService implements UserDetailsService {
     private final SiteRepository siteRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Optional<SiteResultDTO> save(SiteDTO site) {
-        Optional<SiteResultDTO> dtoOptional = Optional.empty();
+    public SiteResultDTO save(SiteDTO site) throws ServiceException {
+        var result = new SiteResultDTO(false,
+                        new RandomGenerator().generate(),
+                        new RandomGenerator().generate()
+                );
         try {
-            dtoOptional = Optional.of(
-                    new SiteResultDTO(false,
-                            new RandomGenerator().generate(),
-                            new RandomGenerator().generate()
-                    ));
             Site newSite = new Site();
             newSite.setSite(site.getSite());
-            newSite.setLogin(dtoOptional.get().getLogin());
-            newSite.setPassword(bCryptPasswordEncoder.encode(dtoOptional.get().getPassword()));
+            newSite.setLogin(result.getLogin());
+            newSite.setPassword(bCryptPasswordEncoder.encode(result.getPassword()));
             siteRepository.save(newSite);
-            dtoOptional.get().setRegistration(true);
-        } catch (DataIntegrityViolationException e) {
+            result.setRegistration(true);
+        } catch (Exception e) {
             log.error("Сайт с этим login уже существует", e);
+            throw new ServiceException("Сайт с этим login уже существует", e);
         }
-        return dtoOptional;
+        return result;
     }
 
     @Override

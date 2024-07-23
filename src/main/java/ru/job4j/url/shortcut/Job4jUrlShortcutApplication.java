@@ -18,6 +18,9 @@ public class Job4jUrlShortcutApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Job4jUrlShortcutApplication.class, args);
 		System.out.println("Go to http://localhost:8085/");
+		System.out.println("Go to http://localhost:8085/v2/api-docs/");
+		System.out.println("Go to http://localhost:8085/v3/api-docs/");
+		System.out.println("Go to http://localhost:8085/swagger-ui/index.html");
 	}
 
 	@Bean

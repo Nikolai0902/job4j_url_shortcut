@@ -1,6 +1,8 @@
 package ru.job4j.url.shortcut.controller;
 
 import lombok.AllArgsConstructor;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -8,12 +10,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.job4j.url.shortcut.exception.ControllerException;
+import ru.job4j.url.shortcut.exception.ServiceException;
+import ru.job4j.url.shortcut.model.StatisticDTO;
+import ru.job4j.url.shortcut.model.Url;
 import ru.job4j.url.shortcut.model.UrlDto;
 import ru.job4j.url.shortcut.model.UrlResultDto;
 import ru.job4j.url.shortcut.service.SiteService;
 import ru.job4j.url.shortcut.service.UrlService;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,15 +33,19 @@ public class UrlController {
     private final SiteService siteService;
 
     @PostMapping("/convert")
-    public ResponseEntity<UrlResultDto> convert(@Valid @RequestBody UrlDto address) {
+    public ResponseEntity<UrlResultDto> convert(@Valid @RequestBody UrlDto address) throws ControllerException {
         String site = siteService.findByLogin(
                 SecurityContextHolder.getContext().getAuthentication().getName()).getSite();
         address.setAddress(site + "/" + address.getAddress());
-        var result = this.urlService.save(address);
-        if (result.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Url уже существует");
+        try {
+            var result = this.urlService.save(address);
+            return ResponseEntity.ok(result);
+        } catch (ServiceException e) {
+            if (e.getCause() instanceof DataIntegrityViolationException) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+            throw new ControllerException("не удается преобразовать", e);
         }
-        return ResponseEntity.ok(new UrlResultDto(result.get().getKey()));
     }
 
     @GetMapping("/redirect/{key}")
@@ -53,11 +64,11 @@ public class UrlController {
     }
 
     @GetMapping("/statistic")
-    public ResponseEntity<Map<String, String>> statistic() {
-        Map<String, String> map = urlService.findAll().stream()
-                .collect(Collectors.toMap(
-                        url1 -> "url: " + url1.getUrl(),
-                        url -> "total: " + url.getCount()));
+    public ResponseEntity<?> statistic() {
+        Collection<StatisticDTO> map = urlService.findAll()
+                .stream()
+                .map(u -> new StatisticDTO(u.getUrl(), u.getCount()))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(map);
     }
 }
