@@ -2,11 +2,11 @@ package ru.job4j.url.shortcut.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.function.Supplier;
-
+/**
+ * Модель данных DTO результата статистики.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

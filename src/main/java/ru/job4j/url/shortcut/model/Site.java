@@ -4,6 +4,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Модель данных site.
+ */
 @Data
 @Entity
 @AllArgsConstructor

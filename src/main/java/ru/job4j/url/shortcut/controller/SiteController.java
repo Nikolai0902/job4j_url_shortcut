@@ -15,12 +15,19 @@ import ru.job4j.url.shortcut.service.SiteService;
 
 import javax.validation.Valid;
 
+
+/**
+ * Класс-контроллер регистрации сайта
+ */
 @RestController
 @AllArgsConstructor
 public class SiteController {
 
     private final SiteService siteService;
 
+    /**
+     * Метод регитсрации нового сайта.
+     */
     @PostMapping("/registration")
     public ResponseEntity<SiteResultDTO> registration(@Valid @RequestBody SiteDTO siteDTO) throws ControllerException {
         try {

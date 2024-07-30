@@ -5,6 +5,6 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <include file="db/000_ddl_create_schema_site.sql" relativeToChangelogFile="true"/>
-    <include file="db/001_ddl_create_schema_urls.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/000_ddl_create_schema_site.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/001_ddl_create_schema_urls.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

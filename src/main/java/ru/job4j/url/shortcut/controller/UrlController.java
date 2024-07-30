@@ -13,13 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.url.shortcut.exception.ControllerException;
 import ru.job4j.url.shortcut.exception.ServiceException;
 import ru.job4j.url.shortcut.model.StatisticDTO;
-import ru.job4j.url.shortcut.model.Url;
 import ru.job4j.url.shortcut.model.UrlDto;
 import ru.job4j.url.shortcut.model.UrlResultDto;
 import ru.job4j.url.shortcut.service.SiteService;
 import ru.job4j.url.shortcut.service.UrlService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 public class UrlController {
 
     private final UrlService urlService;
-    private final SiteService siteService;
 
+    /**
+     * Метод регистрации URL.
+     * Пользователь должен быть авторизирован.
+     */
     @PostMapping("/convert")
     public ResponseEntity<UrlResultDto> convert(@Valid @RequestBody UrlDto address) throws ControllerException {
-        String site = siteService.findByLogin(
-                SecurityContextHolder.getContext().getAuthentication().getName()).getSite();
-        address.setAddress(site + "/" + address.getAddress());
         try {
             var result = this.urlService.save(address);
             return ResponseEntity.ok(result);
@@ -48,6 +48,10 @@ public class UrlController {
         }
     }
 
+    /**
+     * Метод переадресации.
+     * Без авторизации.
+     */
     @GetMapping("/redirect/{key}")
     public ResponseEntity<?> convert(@PathVariable String key) {
         var codeOpt = urlService.findByKey(key);
@@ -55,14 +59,14 @@ public class UrlController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Code is not found.");
         }
         urlService.incrementCount(codeOpt.get().getUrl());
-        return new ResponseEntity(
-                new MultiValueMapAdapter<>(Map.of(
-                        "HTTP CODE",
-                        List.of(codeOpt.get().getUrl()))),
-                HttpStatus.FOUND
-        );
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("HTTP CODE", "302 REDIRECT URL")
+                .body(Map.of("url", codeOpt.get().getUrl()));
     }
 
+    /**
+     * Статистика запросов url.
+     */
     @GetMapping("/statistic")
     public ResponseEntity<?> statistic() {
         Collection<StatisticDTO> map = urlService.findAll()

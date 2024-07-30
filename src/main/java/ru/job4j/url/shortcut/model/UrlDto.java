@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * Модель данных DTO ввода адреса для переадресации.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

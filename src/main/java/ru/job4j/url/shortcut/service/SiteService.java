@@ -14,10 +14,11 @@ import ru.job4j.url.shortcut.model.SiteDTO;
 import ru.job4j.url.shortcut.model.SiteResultDTO;
 import ru.job4j.url.shortcut.repository.SiteRepository;
 import ru.job4j.url.shortcut.util.RandomGenerator;
+import java.util.Collections;;
 
-import java.util.Collections;
-import java.util.Optional;
-
+/**
+ * Класс - реализация сервиса для работы с сайтами с использованием Spring Data
+ */
 @Service
 @AllArgsConstructor
 @Slf4j

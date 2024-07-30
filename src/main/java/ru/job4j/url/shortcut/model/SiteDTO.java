@@ -5,7 +5,12 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * Модель данных DTO сайта для регистрации.
+ */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SiteDTO {
 
     @NotBlank(message = "Site must be not empty")

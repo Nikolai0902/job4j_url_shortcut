@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Модель данных URl.
+ */
 @Data
 @Entity
 @AllArgsConstructor
@@ -22,5 +25,12 @@ public class Url {
     private int id;
     private int count = 0;
     private String url;
-    private String key;
+
+    @Column(name = "hash_code")
+    private String hashCode;
+
+    public Url(String url, String hashCode) {
+        this.url = url;
+        this.hashCode = hashCode;
+    }
 }

@@ -7,22 +7,23 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * Главный класс приложения с методом main
+ */
 @SpringBootApplication
-public class Job4jUrlShortcutApplication extends SpringBootServletInitializer {
-
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Job4jUrlShortcutApplication.class);
-	}
+public class Main {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Job4jUrlShortcutApplication.class, args);
+		SpringApplication.run(Main.class, args);
 		System.out.println("Go to http://localhost:8085/");
 		System.out.println("Go to http://localhost:8085/v2/api-docs/");
 		System.out.println("Go to http://localhost:8085/v3/api-docs/");
 		System.out.println("Go to http://localhost:8085/swagger-ui/index.html");
 	}
 
+	/**
+	 * Метод, создающий и возвращающий бин кодировщика паролей
+	 */
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

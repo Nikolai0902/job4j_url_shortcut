@@ -17,6 +17,9 @@ import ru.job4j.url.shortcut.service.SiteService;
 
 import static ru.job4j.url.shortcut.filter.JWTAuthenticationFilter.SIGN_UP_URL;
 
+/**
+ * Класс Web-конфигурации
+ */
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 

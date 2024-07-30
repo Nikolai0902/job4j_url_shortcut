@@ -9,9 +9,12 @@ import ru.job4j.url.shortcut.model.Url;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Реализация хранилища URL с помощью Spring Data
+ */
 public interface UrlRepository extends CrudRepository<Url, Integer> {
 
-    Optional<Url> findByKey(String key);
+    Optional<Url> findByHashCode(String code);
 
     List<Url> findAll();
 

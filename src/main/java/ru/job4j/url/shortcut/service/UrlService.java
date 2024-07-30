@@ -11,6 +11,9 @@ import ru.job4j.url.shortcut.util.RandomGenerator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс - реализация сервиса для работы с URL с использованием Spring Data
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -21,10 +24,10 @@ public class UrlService {
     public UrlResultDto save(UrlDto address) throws ServiceException {
         Url url = new Url();
         url.setUrl(address.getAddress());
-        url.setKey(new RandomGenerator().generate());
+        url.setHashCode(new RandomGenerator().generate());
         try {
             var result = urlRepository.save(url);
-            return new UrlResultDto(result.getKey());
+            return new UrlResultDto(result.getHashCode());
         } catch (Exception e) {
             log.error("Url уже существует", e);
             throw new ServiceException("Url уже существует", e);
@@ -32,7 +35,7 @@ public class UrlService {
     }
 
     public Optional<Url> findByKey(String key) {
-        return urlRepository.findByKey(key);
+        return urlRepository.findByHashCode(key);
     }
 
     public void incrementCount(String url) {
